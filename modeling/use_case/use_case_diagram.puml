@@ -1,0 +1,12 @@
+@startuml "Humita's Use Case Diagram"
+left to right direction
+
+actor Developer
+
+rectangle "Humita" {
+    usecase (Generate Domain Classes) as GenerateDomainClasses
+}
+
+Developer --> GenerateDomainClasses
+
+@enduml

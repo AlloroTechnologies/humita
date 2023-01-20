@@ -1,0 +1,147 @@
+@startuml "Humita's Class Diagram"
+skinparam classAttributeIconSize 0
+
+interface IValidatable
+{
+    IsValid : bool <<property>>
+}
+
+enum FileType
+{
+    None = 0
+    DomainClassesDiagram = 1
+}
+
+interface IFile
+{
+    Name : string <<property>>
+    Type : FileType <<property>>
+}
+
+class PlantUmlClassDiagramFile
+{
+    +Name : string <<property>>
+    +Type : FileType <<property>>
+    +IsValid : bool <<property>>
+    +Enums : List<Enum> <<property>>
+    +Structs : List<Struct> <<property>>
+    +Interfaces : List<Interface> <<property>>
+    +Classes : List<Class> <<property>>
+
+    +ParseEnums() : void
+    +ParseStructs() : void
+    +ParseInterfaces() : void
+    +ParseClasses() : void
+    +ParseAll() : void
+}
+
+enum AccessModifier
+{
+    None = 0
+    Private = 1
+    Protected = 2
+    Internal = 3
+    ProtectedInternal = 4
+    PrivateInternal = 5
+    Public = 6
+}
+
+enum Modifier
+{
+    None = 0
+    Static = 1
+    Abstract = 2
+}
+
+class Property
+{
+    +Name : string <<property>>
+    +Type : string <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +Modifier : Modifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+class OperationParameter
+{
+    +Name : string <<property>>
+    +Type : string <<property>>
+    +IsValid : bool <<property>>
+}
+
+class Operation
+{
+    +Name : string <<property>>
+    +Parameters : List<OperationParameter> <<property>>
+    +ReturnType : string <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +Modifier : Modifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+class "Interface"
+{
+    +ExtendedInterfaces : List<Interface> <<property>>
+    +Properties : List<Property> <<property>>
+    +Operations : List<Operation> <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+class "Class"
+{
+    +ImplementedInterfaces : List<Interface> <<property>>
+    +BaseClass : Class <<property>>
+    +Properties : List<Property> <<property>>
+    +Operations : List<Operation> <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +Modifier : Modifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+class "Struct"
+{
+    +ImplementedInterfaces : List<Interface> <<property>>
+    +Properties : List<Property> <<property>>
+    +Operations : List<Operation> <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+class "Enum"
+{
+    +Values : IDictionary<string, int> <<property>>
+    +AccessModifier : AccessModifier <<property>>
+    +IsValid : bool <<property>>
+}
+
+IFile "0..*" -- "1" FileType : is of >
+IFile "0..1" -- "1..*" "Class" : contains >
+Property "0..*" -- "1" AccessModifier : has >
+Operation "0..*" -- "1" AccessModifier : has >
+"Interface" "0..*" -- "1" AccessModifier : has >
+"Class" "0..*" -- "1" AccessModifier : has >
+"Struct" "0..*" -- "1" AccessModifier : has >
+"Enum" "0..*" -- "1" AccessModifier : has >
+Property "0..*" -- "0..1" Modifier : has >
+Operation "0..*" -- "0..1" Modifier : has >
+"Class" "0..*" -- "0..1" Modifier : has >
+Operation "1..*" -- "0..*" OperationParameter : has >
+"Interface" "0..*" -- "0..*" "Interface" : extends >
+"Interface" "0..*" -- "0..*" "Property" : has >
+"Interface" "0..*" -- "0..*" "Operation" : has >
+"Class" "0..*" -- "0..*" "Interface" : implements >
+"Class" "0..*" -- "0..1" "Class" : extends >
+"Class" "0..*" -- "0..*" "Property" : has >
+"Class" "0..*" -- "0..*" "Operation" : has >
+Property ..|> IValidatable
+OperationParameter ..|> IValidatable
+Operation ..|> IValidatable
+"Interface" ..|> IValidatable
+"Class" ..|> IValidatable
+"Struct" ..|> IValidatable
+"Enum" ..|> IValidatable
+PlantUmlClassDiagramFile ..|> IValidatable
+PlantUmlClassDiagramFile ..|> IFile
+
+@enduml
